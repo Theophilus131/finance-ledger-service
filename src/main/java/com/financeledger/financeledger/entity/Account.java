@@ -31,9 +31,11 @@ public class Account extends BaseEntity {
     @Column(nullable = false)
     private AccountType type;
 
+    @Builder.Default
     @Column(nullable = false)
     private String currency = "NGN";
 
+    @Builder.Default
     @Column(nullable = false, precision = 19, scale = 4)
     private BigDecimal balance = BigDecimal.ZERO;
 
