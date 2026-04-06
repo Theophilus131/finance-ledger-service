@@ -36,6 +36,7 @@ public class JournalEntry extends BaseEntity {
     private UUID refId;
 
     @Column(nullable = false)
+    @Builder.Default
     private LocalDateTime entryDate = LocalDateTime.now();
 
     public enum EntryType {

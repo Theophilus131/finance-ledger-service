@@ -15,6 +15,8 @@ import org.springframework.transaction.annotation.Transactional;
 import java.math.BigDecimal;
 import java.time.LocalDateTime;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -24,15 +26,31 @@ public class PaymentService {
 
     private final PaymentRepository paymentRepository;
     private final InvoiceRepository invoiceRepository;
+    private final AuditLogService auditLogService;
 
     @Transactional
     public PaymentResponse capturePayment(PaymentRequest request) {
-        if (paymentRepository.findByIdempotencyKey(
-                request.getIdempotencyKey()).isPresent()) {
-            return mapToResponse(paymentRepository
-                    .findByIdempotencyKey(request.getIdempotencyKey()).get());
+        // Idempotency check - return existing payment if already processed
+        Optional<Payment> existing = paymentRepository.findByIdempotencyKey(request.getIdempotencyKey());
+        if (existing.isPresent()) {
+            Payment existingPayment = existing.get();
+
+            auditLogService.log(
+                    "system",
+                    "PAYMENT_CAPTURED",
+                    "Payment",
+                    existingPayment.getId(),
+                    Map.of(
+                            "amount", existingPayment.getAmount().toString(),
+                            "method", existingPayment.getMethod(),
+                            "status", existingPayment.getStatus().toString()
+                    )
+            );
+
+            return mapToResponse(existingPayment);
         }
 
+        // Validate invoice exists
         Invoice invoice = invoiceRepository.findById(request.getInvoiceId())
                 .orElseThrow(() -> new ResourceNotFoundException(
                         "Invoice", request.getInvoiceId().toString()));
@@ -41,6 +59,7 @@ public class PaymentService {
             throw new BadRequestException("Cannot pay a cancelled invoice");
         }
 
+        // Build and save the new payment
         Payment payment = Payment.builder()
                 .invoice(invoice)
                 .amount(request.getAmount())
@@ -51,9 +70,10 @@ public class PaymentService {
                 .paidAt(LocalDateTime.now())
                 .build();
 
-        BigDecimal totalPaid = invoiceRepository
-                .findById(invoice.getId()).get()
-                .getPayments().stream()
+        Payment savedPayment = paymentRepository.save(payment);
+
+        // Update invoice status based on total paid
+        BigDecimal totalPaid = invoice.getPayments().stream()
                 .map(Payment::getAmount)
                 .reduce(BigDecimal.ZERO, BigDecimal::add)
                 .add(request.getAmount());
@@ -65,7 +85,20 @@ public class PaymentService {
         }
 
         invoiceRepository.save(invoice);
-        return mapToResponse(paymentRepository.save(payment));
+
+        auditLogService.log(
+                "system",
+                "PAYMENT_CAPTURED",
+                "Payment",
+                savedPayment.getId(),
+                Map.of(
+                        "amount", savedPayment.getAmount().toString(),
+                        "method", savedPayment.getMethod(),
+                        "status", savedPayment.getStatus().toString()
+                )
+        );
+
+        return mapToResponse(savedPayment);
     }
 
     public List<PaymentResponse> getPaymentsByInvoice(UUID invoiceId) {
@@ -86,5 +119,4 @@ public class PaymentService {
                 .createdAt(payment.getCreatedAt())
                 .build();
     }
-
 }

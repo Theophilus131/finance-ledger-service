@@ -22,6 +22,7 @@ public class ReconciliationItem extends BaseEntity{
     @JoinColumn(name = "statement_id", nullable = false)
     private BankStatement statement;
 
+    @Builder.Default
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
     private ReconciliationStatus status = ReconciliationStatus.UNMATCHED;

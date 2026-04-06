@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.math.BigDecimal;
 import java.util.List;
+import java.util.Map;
+import java.util.Optional;
 import java.util.UUID;
 import java.util.stream.Collectors;
 
@@ -22,13 +24,14 @@ public class InvoiceService {
 
     private final InvoiceRepository invoiceRepository;
     private final AccountRepository accountRepository;
+    private final AuditLogService auditLogService;
 
     @Transactional
     public InvoiceResponse createInvoice(InvoiceRequest request) {
-        if (invoiceRepository.findByIdempotencyKey(
-                request.getIdempotencyKey()).isPresent()) {
-            return mapToResponse(invoiceRepository
-                    .findByIdempotencyKey(request.getIdempotencyKey()).get());
+        // Idempotency check - return existing invoice if already created
+        Optional<Invoice> existing = invoiceRepository.findByIdempotencyKey(request.getIdempotencyKey());
+        if (existing.isPresent()) {
+            return mapToResponse(existing.get());
         }
 
         Account account = accountRepository.findById(request.getAccountId())
@@ -50,7 +53,20 @@ public class InvoiceService {
                 .dueDate(request.getDueDate())
                 .build();
 
-        return mapToResponse(invoiceRepository.save(invoice));
+        Invoice savedInvoice = invoiceRepository.save(invoice);
+
+        auditLogService.log(
+                "system",
+                "INVOICE_CREATED",
+                "Invoice",
+                savedInvoice.getId(),
+                Map.of(
+                        "invoiceNumber", savedInvoice.getInvoiceNumber(),
+                        "total", savedInvoice.getTotal().toString()
+                )
+        );
+
+        return mapToResponse(savedInvoice);
     }
 
     public InvoiceResponse getInvoice(UUID id) {
@@ -87,5 +103,4 @@ public class InvoiceService {
                 .createdAt(invoice.getCreatedAt())
                 .build();
     }
-
 }

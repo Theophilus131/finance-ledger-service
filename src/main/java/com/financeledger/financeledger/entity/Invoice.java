@@ -27,6 +27,7 @@ public class Invoice extends BaseEntity{
 
     @Enumerated(EnumType.STRING)
     @Column(nullable = false)
+    @Builder.Default
     private InvoiceStatus status = InvoiceStatus.PENDING;
 
     @Column(nullable = false, precision = 19, scale = 4)
