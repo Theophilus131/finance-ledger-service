@@ -1,0 +1,144 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8"/>
+    <style>
+        body {
+            font-family: Arial, sans-serif;
+            margin: 40px;
+            color: #333;
+        }
+        .header {
+            text-align: center;
+            border-bottom: 2px solid #f97316;
+            padding-bottom: 20px;
+            margin-bottom: 30px;
+        }
+        .header h1 {
+            color: #f97316;
+            font-size: 28px;
+            margin: 0;
+        }
+        .header p {
+            color: #666;
+            margin: 5px 0;
+        }
+        .badge {
+            background-color: #dcfce7;
+            color: #16a34a;
+            padding: 6px 16px;
+            border-radius: 20px;
+            font-weight: bold;
+            display: inline-block;
+            margin-top: 10px;
+        }
+        .section {
+            margin-bottom: 24px;
+        }
+        .section h3 {
+            color: #f97316;
+            border-bottom: 1px solid #eee;
+            padding-bottom: 6px;
+        }
+        .row {
+            display: flex;
+            justify-content: space-between;
+            padding: 6px 0;
+            border-bottom: 1px solid #f5f5f5;
+        }
+        .label { color: #666; }
+        .value { font-weight: bold; }
+        .total-box {
+            background-color: #fff7ed;
+            border: 1px solid #f97316;
+            border-radius: 8px;
+            padding: 16px;
+            margin-top: 20px;
+        }
+        .total-row {
+            display: flex;
+            justify-content: space-between;
+            padding: 4px 0;
+        }
+        .grand-total {
+            font-size: 20px;
+            font-weight: bold;
+            color: #f97316;
+            border-top: 2px solid #f97316;
+            margin-top: 8px;
+            padding-top: 8px;
+        }
+        .footer {
+            text-align: center;
+            margin-top: 40px;
+            color: #999;
+            font-size: 12px;
+            border-top: 1px solid #eee;
+            padding-top: 16px;
+        }
+    </style>
+</head>
+<body>
+<div class="header">
+    <h1>Finance Ledger</h1>
+    <p>Payment Receipt</p>
+    <div class="badge">PAID</div>
+</div>
+
+<div class="section">
+    <h3>Receipt Details</h3>
+    <div class="row">
+        <span class="label">Receipt Number</span>
+        <span class="value" th:text="${receiptId}"></span>
+    </div>
+    <div class="row">
+        <span class="label">Invoice Number</span>
+        <span class="value" th:text="${invoiceNumber}"></span>
+    </div>
+    <div class="row">
+        <span class="label">Date Issued</span>
+        <span class="value" th:text="${generatedAt}"></span>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Payment Summary</h3>
+    <div class="total-box">
+        <div class="total-row">
+            <span class="label">Subtotal</span>
+            <span th:text="'NGN ' + ${subtotal}"></span>
+        </div>
+        <div class="total-row">
+            <span class="label">Tax</span>
+            <span th:text="'NGN ' + ${tax}"></span>
+        </div>
+        <div class="total-row grand-total">
+            <span>Total Paid</span>
+            <span th:text="'NGN ' + ${total}"></span>
+        </div>
+    </div>
+</div>
+
+<div class="section">
+    <h3>Payment Info</h3>
+    <div class="row">
+        <span class="label">Payment Method</span>
+        <span class="value" th:text="${paymentMethod}"></span>
+    </div>
+    <div class="row">
+        <span class="label">Transaction Reference</span>
+        <span class="value" th:text="${gatewayRef}"></span>
+    </div>
+    <div class="row">
+        <span class="label">Payment Date</span>
+        <span class="value" th:text="${paidAt}"></span>
+    </div>
+</div>
+
+<div class="footer">
+    <p>Thank you for your payment!</p>
+    <p>Finance Ledger &amp; Reconciliation System</p>
+    <p th:text="'Generated on ' + ${generatedAt}"></p>
+</div>
+</body>
+</html>
