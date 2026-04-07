@@ -4,12 +4,15 @@
 
 
 
-> A production-grade finance API built with Spring Boot 3, PostgreSQL, and JWT Security.
+> A production-grade finance API built with Spring Boot 3,
+PostgreSQL, JWT Security and Docker
 
 
 
-\##  In Progress
 
+## 🚀 Live API
+Base URL: https://finance-ledger-service.onrender.com
+Swagger UI: http://localhost:8080/swagger-ui/index.html#/Reconciliation/reconcile
 
 
 Full documentation coming after deployment.
