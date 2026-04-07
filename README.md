@@ -135,6 +135,9 @@ http://localhost:8080/swagger-ui/index.html
 \```
 
 
+## Presentation
+[View Presentation Slides](./screenshots/finance-ledger-presentation.pdf)
+
 ##  Entity Relationship Diagram
 [See /screenshots/er-diagram.png]
 
