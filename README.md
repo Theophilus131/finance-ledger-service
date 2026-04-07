@@ -63,7 +63,7 @@ full tamper-evident trail of all system activity.
 
 
 ## 🚀 Live API
-Base URL: https://finance-ledger-service.onrender.com
+Base URL: https://finance-ledger-service.onrender.com/swagger-ui.html
 Swagger UI: http://localhost:8080/swagger-ui/index.html
 
 
