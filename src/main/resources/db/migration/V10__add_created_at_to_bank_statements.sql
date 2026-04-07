@@ -1,1 +1,4 @@
 ALTER TABLE bank_statements ADD COLUMN IF NOT EXISTS created_at TIMESTAMP;
+
+ALTER TABLE receipts ADD COLUMN IF NOT EXISTS created_at TIMESTAMP;
+
