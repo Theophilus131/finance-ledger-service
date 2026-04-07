@@ -29,13 +29,23 @@ Full documentation coming after deployment.
 
 \- Flyway
 
-\- Docker
+\- Docker & Docker compose
+
+\- HMAC Webhook Verification
 
 \- JWT + HMAC Security
 
 \- OpenAPI/Swagger
 
-\- Thymeleaf PDF
+\- Thymeleaf PDF Generation
+
+\- Junit 5 + Mockito
+
+### Prerequisites
+
+- java 17+
+- Maven
+-Docker Desktop
 
 
 
@@ -63,3 +73,38 @@ mvn spring-boot:run
 
 \\```
 
+
+open Swagger:
+\```
+http://localhost:8080/swagger-ui/index.html
+\```
+
+
+##  Entity Relationship Diagram
+[See /screenshots/er-diagram.png]
+
+
+##  Screenshots
+See the /screenshots folder for:
+- API response screenshots
+- Database UI screenshots
+- ER Diagram
+
+
+
+##  API Endpoints
+
+| Method | Endpoint | Description |
+
+| POST | /api/auth/register | Register user |
+| POST | /api/auth/login | Login and get JWT |
+| POST | /api/accounts | Create account |
+| GET | /api/accounts | Get my accounts |
+| POST | /api/journal | Create journal entry |
+| GET | /api/journal/trial-balance | Get trial balance |
+| POST | /api/invoices | Create invoice |
+| POST | /api/payments | Capture payment |
+| GET | /api/receipts/{id}/download | Download PDF receipt |
+| POST | /api/reconciliation/import | Import bank statement |
+| POST | /api/reconciliation/{id}/reconcile | Run reconciliation |
+| GET | /api/audit/me | Get my audit logs |
