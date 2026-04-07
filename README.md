@@ -12,7 +12,7 @@ PostgreSQL, JWT Security and Docker
 
 ## 🚀 Live API
 Base URL: https://finance-ledger-service.onrender.com
-Swagger UI: http://localhost:8080/swagger-ui/index.html#/Reconciliation/reconcile
+Swagger UI: http://localhost:8080/swagger-ui/index.html
 
 
 Full documentation coming after deployment.
@@ -94,17 +94,19 @@ See the /screenshots folder for:
 
 ##  API Endpoints
 
-| Method | Endpoint | Description |
+## API Endpoints
 
-| POST | /api/auth/register | Register user |
-| POST | /api/auth/login | Login and get JWT |
-| POST | /api/accounts | Create account |
-| GET | /api/accounts | Get my accounts |
-| POST | /api/journal | Create journal entry |
-| GET | /api/journal/trial-balance | Get trial balance |
-| POST | /api/invoices | Create invoice |
-| POST | /api/payments | Capture payment |
-| GET | /api/receipts/{id}/download | Download PDF receipt |
-| POST | /api/reconciliation/import | Import bank statement |
-| POST | /api/reconciliation/{id}/reconcile | Run reconciliation |
-| GET | /api/audit/me | Get my audit logs |
+| Method | Endpoint                              | Description                  |
+|--------|----------------------------------------|------------------------------|
+| POST   | /api/auth/register                     | Register user                |
+| POST   | /api/auth/login                        | Login and get JWT            |
+| POST   | /api/accounts                          | Create account               |
+| GET    | /api/accounts                          | Get my accounts              |
+| POST   | /api/journal                           | Create journal entry         |
+| GET    | /api/journal/trial-balance             | Get trial balance            |
+| POST   | /api/invoices                          | Create invoice               |
+| POST   | /api/payments                          | Capture payment              |
+| GET    | /api/receipts/{id}/download            | Download PDF receipt         |
+| POST   | /api/reconciliation/import             | Import bank statement        |
+| POST   | /api/reconciliation/{id}/reconcile     | Run reconciliation           |
+| GET    | /api/audit/me                          | Get my audit logs            |
