@@ -1,9 +1,6 @@
 # finance-ledger-service
 
 
-
-
-
 > A production-grade finance API built with Spring Boot 3, PostgreSQL, JWT SecurityAnd Docker
 
 
